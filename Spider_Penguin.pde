@@ -16,6 +16,9 @@ float circleradius = 150;
 float circleoscillation = 20;
 float circletime = 0;
 
+boolean turnLeft = false;
+boolean turnRight = false;
+
 class Shot
 {
   public float _sx, _sy, _svx, _svy;    
@@ -150,12 +153,41 @@ void keyPressed() {
       impulse = 0;
       break;
     case LEFT:
-        theta -= PI/16;
+//        theta -= PI/16;
+        turnLeft = true;
       break;
     case RIGHT:
-        theta += PI/16;
+//        theta += PI/16;
+        turnRight = true;
       break;
     }
   }
+}
+
+void keyReleased() 
+{
+  if (key == CODED)
+  {
+    switch (keyCode)
+    {
+/*    case UP: 
+//        ypos -= drag;
+      impulse = 50;
+      break; 
+    case DOWN:
+//      ypos += drag;
+      impulse = 0;
+      break;  */
+    case LEFT:
+//        theta -= PI/16;
+        turnLeft = false;
+      break;
+    case RIGHT:
+//        theta += PI/16;
+        turnRight = false;
+      break;
+    }
+  }
+  
 }
 
