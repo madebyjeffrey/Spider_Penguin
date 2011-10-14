@@ -18,6 +18,7 @@ float circletime = 0;
 
 boolean turnLeft = false;
 boolean turnRight = false;
+float turnRate = PI;  // how much to turn per second
 
 class Shot
 {
@@ -55,7 +56,7 @@ ArrayList shots;
 
 void setup() {
   size(640, 480);
-  ship = loadImage("ship.png");
+  ship = loadImage("ship3.png");
   xpos = width/2;
   ypos = height/2;
 
@@ -96,6 +97,12 @@ void draw() {
        continue;
      }
   }  
+  
+  // turn ship
+  if (turnLeft ^ turnRight)
+  {
+     theta += (turnLeft ? -1 : 1) * turnRate * delta/1000.0;
+  }
 
  // draw ship
   translate(xpos, ypos);
@@ -105,10 +112,10 @@ void draw() {
   rotate(theta - PI/2);
 //  fill(1);
   stroke(1);
-  triangle(0, -r, 
+/*  triangle(0, -r, 
         cos(-PI/6)*r/2, -sin(-PI/6)*r/2, 
         cos(7*PI/6)*r/2, -sin(7*PI/6)*r/2);
-
+*/
   noFill();
   
   circletime += delta / 2000; // half time rate
@@ -117,11 +124,14 @@ void draw() {
   println(circletime);
   stroke(1, 1, 1);
   arc(0, 0, cr*2, cr*2, 0, 2*PI);
+  
+  translate(-16, -32);
+  scale(0.5);
+  
+  image(ship, 0, 0);
   //  image(ship, 0, 0);
 }
-// next step, use:
 
-// void keyReleased() { }  and store key states
 
 void keyPressed() {
   int keyIndex = -1;
