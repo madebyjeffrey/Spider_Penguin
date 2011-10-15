@@ -110,15 +110,15 @@ void draw() {
   noFill();
    // add engine!
   rotate(theta - PI/2);
-//  fill(1);
+  fill(0);
   stroke(1);
-/*  triangle(0, -r, 
+  triangle(0, -r, 
         cos(-PI/6)*r/2, -sin(-PI/6)*r/2, 
         cos(7*PI/6)*r/2, -sin(7*PI/6)*r/2);
-*/
+
   noFill();
   
-  circletime += delta / 2000; // half time rate
+  circletime += delta / 10000; // half time rate
   if (circletime > 1.0) circletime -= 1;
   float cr = circleradius + circleoscillation * sin(circletime * 2*PI);
   println(circletime);
@@ -128,8 +128,8 @@ void draw() {
   translate(-16, -32);
   scale(0.5);
   
-  image(ship, 0, 0);
-  //  image(ship, 0, 0);
+//  image(ship, 0, 0);
+
 }
 
 
