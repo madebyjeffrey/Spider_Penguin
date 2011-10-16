@@ -2,18 +2,10 @@
 import ddf.minim.*;
 import processing.opengl.*;
 
-PImage ship;
-PImage satBody;
-PImage satWings;
-float satTheta;
+Enemy enemy;
+Ship ship;
 
 float r = 30;
-float xpos, ypos;
-float xvel, yvel;
-float mass = 100;
-float impulse = 0;
-
-float theta = PI/2;  // PI/2 is up
 
 int rotated = 0;
 float timer = 0;
@@ -29,37 +21,6 @@ float turnRate = PI;  // how much to turn per second
 Minim minim;
 AudioPlayer player;
 
-class Shot
-{
-  public float _sx, _sy, _svx, _svy;    
-  
-  public Shot(float sx, float sy, float svx, float svy) 
-  {
-    _sx = sx;
-    _sy = sy;
-    _svx = svx;
-    _svy = svy;
-  }  
-  
-  public void update(float delta)
-  {
-     _sx -= _svx * (delta / 1000.0);
-     _sy -= _svy * (delta / 1000.0);
-  }
-  
-  public void draw()
-  {
-     arc(_sx, _sy, 5, 5, 0, 2*PI); 
-  }
-  
-  public boolean valid()
-  {
-     return !((_sx < 0 || _sx > width) || (_sy < 0 || _sy > height));
-  }  
-   
-     
-
-}
 
 ArrayList shots;
 
@@ -68,29 +29,22 @@ void setup() {
   hint(ENABLE_OPENGL_4X_SMOOTH);
 //  hint(DISABLE_DEPTH_TEST);
   
-  ship = loadImage("ship3.png");
-  xpos = width/2;
-  ypos = height/2;
+
 
   colorMode(RGB, 1.0);
   
   timer = millis();
   
-  satBody = loadImage("satelliteBody.png");
-  satWings = loadImage("satelliteWings.png");
-  
-//  satBody = loadShape("satelliteBody.svg");
-//  satWings = loadShape("satelliteWings.svg");  
-  
-  satTheta = 0.0;
-//    satWings.rotateX(PI/16);
-//  shot = false;
   shots = new ArrayList();
   
   minim = new Minim(this);
   player = minim.loadFile("Chase Pulse Faster.mp3");
   
   player.play();
+  
+  gl = ((PGraphicsOpenGL)g).gl;
+  
+  enemy = new Enemy();  
 }
 
 void draw() {
@@ -101,12 +55,6 @@ void draw() {
   float delta = newtime - timer;
   timer = newtime;
   
-  float deltaV = impulse / mass;
-  xvel += cos(theta) * deltaV;  // metres / second
-  yvel += sin(theta) * deltaV;
-  
-  xpos -= xvel * (delta / 1000.0);
-  ypos -= yvel * (delta / 1000.0);
   
   for (int i = 0; i < shots.size(); i++)
   {
@@ -123,8 +71,8 @@ void draw() {
      }
   }  
   
-  satTheta += PI * delta/1000.0;
-  
+  enemy.update(delta/1000.0);
+
   // turn ship
   if (turnLeft ^ turnRight)
   {
@@ -153,19 +101,11 @@ void draw() {
   arc(0, 0, cr*2, cr*2, 0, 2*PI);
   
 //  translate(-16, -32);
-  translate(-satBody.width/2, -satBody.height/2);
-//  scale(0.5);
-  
-  //image(ship, 0, 0);
-  
-  
-  //smooth();
-  image(satBody, 0, 0);
 
-  translate(satBody.width/2, satBody.height/2);
-  rotateY(satTheta);
-  translate(-satBody.width/2, -satBody.height/2);
-  image(satWings, 0, 0);
+//  scale(0.5);
+
+  enemy.draw();
+  
 }
 
 
