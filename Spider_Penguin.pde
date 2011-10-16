@@ -10,8 +10,8 @@ float timer = 0;
 Minim minim;
 AudioPlayer player;
 
+GameScreen screen;
 
-ArrayList shots;
 
 void setup() {
   size(800, 600, OPENGL);
@@ -19,16 +19,24 @@ void setup() {
   hint(ENABLE_DEPTH_TEST);
 
   colorMode(RGB, 1.0);
-  
+
   timer = millis();
-  
+
   minim = new Minim(this);
   player = minim.loadFile("Chase Pulse Faster.mp3");
-  
+
   player.play();
+
+  // game screen is 12 x 64
+  screen = new GameScreen(12, 64, 48, 48);
+
+  // ship starts at 5.5x2
+  ship = new Ship(5.5, 2);
   
-  enemy = new Enemy(width/4, height/4);  
-  ship = new Ship();
+  enemy = new Enemy(4.5, 4.5);  
+//  ship = new Ship();
+
+
 }
 
 void draw() {
@@ -38,13 +46,21 @@ void draw() {
   float newtime = millis();
   float delta = (newtime - timer) / 1000.0; 
   timer = newtime;
-  
+
   ship.update(delta);
   enemy.update(delta);
 
-  enemy.draw();
+  translate(0, height);
+  scale(1.0, -1.0);
+
+  screen.drawGrid();
+  screen.setMatrix();
   ship.draw();
-  ship.draw_circle();
+  
+  enemy.draw();
+  //  enemy.draw();
+  //  ship.draw();
+  //  ship.draw_circle();
 }
 
 
@@ -61,16 +77,16 @@ void keyPressed() {
     switch (keyCode)
     {
     case UP: 
-        ship.impulse = 50;
+      ship.goForward = true;
       break; 
     case DOWN:
-        ship.impulse = 0;
+      ship.goBackward = true;
       break;
     case LEFT:
-        ship.turnLeft = true;
+      ship.goLeft = true;
       break;
     case RIGHT:
-        ship.turnRight = true;
+      ship.goRight = true;
       break;
     }
   }
@@ -82,22 +98,27 @@ void keyReleased()
   {
     switch (keyCode)
     {
+    case UP: 
+      ship.goForward = false;
+      break; 
+    case DOWN:
+      ship.goBackward = false;
+      break;
     case LEFT:
-        ship.turnLeft = false;
+      ship.goLeft = false;
       break;
     case RIGHT:
-        ship.turnRight = false;
+      ship.goRight = false;
       break;
     }
   }
-  
 }
 
 void stop()
 {
   player.close();
   minim.stop();
- 
- super.stop(); 
+
+  super.stop();
 }
 

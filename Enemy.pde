@@ -31,13 +31,13 @@ class Enemy
   }
   
   void draw()
-  {
-    pushMatrix();
-    
+  {    pushMatrix();
     
     translate(_x, _y);
     
-    scale(0.25);
+//    scale(0.25);
+
+    scale(1/158.0);
 
     image(body_back, -22, -22);
     image(body_front, -27, 31);
@@ -47,8 +47,9 @@ class Enemy
     image(wing_left, -80, -39);
     image(wing_right, 22, -39);
     
+
+
     
-  
     popMatrix();
     
   }

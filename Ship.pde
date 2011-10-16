@@ -5,10 +5,9 @@ class Ship
   ArrayList shots;
 
   float xpos, ypos;
-  float xvel, yvel;
-  float mass = 100;
-  float impulse = 0;
   float r = 30;
+  
+  float dv = 4;     // delta v per second
 
   float theta = PI/2;  // PI/2 is up
   
@@ -16,16 +15,19 @@ class Ship
   float circleoscillation = 20;
   float circletime = 0;
 
-  boolean turnLeft = false;
-  boolean turnRight = false;
+  boolean goLeft = false;
+  boolean goRight = false;
+  boolean goForward = false;
+  boolean goBackward = false;
 
   float turnRate = PI;  // how much to turn per second
 
-  Ship()
+  Ship(float x, float y)
   {
-    ship = loadImage("ship3.png");
-    xpos = width/2;
-    ypos = height/2;
+    ship = loadImage("ship3.png"); // 64x128
+
+    xpos = x;
+    ypos = y;
     
     shots = new ArrayList();
   }  
@@ -37,19 +39,16 @@ class Ship
   
   void update(float delta)
   {
-    float deltaV = impulse / mass;
 
-    xvel += cos(theta) * deltaV;  // metres / second
-    yvel += sin(theta) * deltaV;
-  
-    xpos -= xvel * (delta);
-    ypos -= yvel * (delta);
-
-    if (turnLeft ^ turnRight)
-    {
-      println("Turn!");
-      theta += (turnLeft ? -1 : 1) * turnRate * delta;
-    }
+    // ship position
+    xpos += dv * delta * (goLeft ? -1 : (goRight ? 1 : 0));
+    ypos += dv * delta * (goBackward ? -1 : (goForward ? 1 : 0));
+    
+    if (xpos < 1) xpos = 1;
+    if (xpos > (screen._w)) xpos = screen._w;
+    
+    if (ypos < 2) ypos = 2;
+    if (ypos > 4.5) ypos = 4.5;
 
 
     // shots
@@ -80,12 +79,18 @@ class Ship
   {
     pushMatrix();
    
+     println("ship("+xpos+", " + ypos + ")");
+
     translate(xpos, ypos);
     
-    scale(0.5);
-    rotate(theta - PI/2);
+//    scale(0.5);
+//    rotate(theta + PI/2);
     
-    image(ship, -ship.width/2, -ship.height/2);
+  //  image(ship, -ship.width/2, -ship.height/2);
+    scale(1/64.0);
+    rotate(PI);
+  
+    image(ship, 0, 0);
     
    
     popMatrix(); 
