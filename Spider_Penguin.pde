@@ -1,5 +1,11 @@
 
+import ddf.minim.*;
+import processing.opengl.*;
+
 PImage ship;
+PImage satBody;
+PImage satWings;
+float satTheta;
 
 float r = 30;
 float xpos, ypos;
@@ -19,6 +25,9 @@ float circletime = 0;
 boolean turnLeft = false;
 boolean turnRight = false;
 float turnRate = PI;  // how much to turn per second
+
+Minim minim;
+AudioPlayer player;
 
 class Shot
 {
@@ -55,7 +64,9 @@ class Shot
 ArrayList shots;
 
 void setup() {
-  size(640, 480);
+  size(640, 480, OPENGL);
+  hint(ENABLE_OPENGL_4X_SMOOTH);
+  
   ship = loadImage("ship3.png");
   xpos = width/2;
   ypos = height/2;
@@ -64,8 +75,21 @@ void setup() {
   
   timer = millis();
   
+  satBody = loadImage("satelliteBody.png");
+  satWings = loadImage("satelliteWings.png");
+  
+//  satBody = loadShape("satelliteBody.svg");
+//  satWings = loadShape("satelliteWings.svg");  
+  
+  satTheta = 0.0;
+//    satWings.rotateX(PI/16);
 //  shot = false;
   shots = new ArrayList();
+  
+  minim = new Minim(this);
+  player = minim.loadFile("Chase Pulse Faster2.mp3");
+  
+  player.play();
 }
 
 void draw() {
@@ -98,6 +122,8 @@ void draw() {
      }
   }  
   
+  satTheta += PI * delta/1000.0;
+  
   // turn ship
   if (turnLeft ^ turnRight)
   {
@@ -112,24 +138,30 @@ void draw() {
   rotate(theta - PI/2);
   fill(0);
   stroke(1);
-  triangle(0, -r, 
+ /* triangle(0, -r, 
         cos(-PI/6)*r/2, -sin(-PI/6)*r/2, 
         cos(7*PI/6)*r/2, -sin(7*PI/6)*r/2);
-
+*/
   noFill();
   
   circletime += delta / 10000; // half time rate
   if (circletime > 1.0) circletime -= 1;
   float cr = circleradius + circleoscillation * sin(circletime * 2*PI);
-  println(circletime);
+//  println(circletime);
   stroke(1, 1, 1);
   arc(0, 0, cr*2, cr*2, 0, 2*PI);
   
-  translate(-16, -32);
+//  translate(-16, -32);
+  translate(-satBody.width/2, 0);
   scale(0.5);
   
-//  image(ship, 0, 0);
-
+  //image(ship, 0, 0);
+  
+  
+  //smooth();
+  image(satBody, 0, 0, 80, 80);
+  rotateY(satTheta);
+  image(satWings, 0, 0, 80, 80);
 }
 
 
@@ -199,5 +231,13 @@ void keyReleased()
     }
   }
   
+}
+
+void stop()
+{
+  player.close();
+  minim.stop();
+ 
+ super.stop(); 
 }
 
