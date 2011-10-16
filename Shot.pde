@@ -12,19 +12,30 @@ class Shot
   
   public void update(float delta)
   {
-     _sx -= _svx * (delta / 1000.0);
-     _sy -= _svy * (delta / 1000.0);
+     _sx -= _svx * delta;
+     _sy -= _svy * delta;
   }
   
   public void draw()
   {
-     arc(_sx, _sy, 5, 5, 0, 2*PI); 
+    pushMatrix();
+   
+    translate(_sx, _sy);
+    fill(1,0,0);
+    stroke(1, 0, 0);
+    arc(0, 0, 5, 5, 0, 2*PI); 
+    
+   
+    popMatrix(); 
+
   }
   
   public boolean valid()
   {
      return !((_sx < 0 || _sx > width) || (_sy < 0 || _sy > height));
   }  
+   
+   
    
   
 }

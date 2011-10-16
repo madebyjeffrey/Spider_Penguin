@@ -1,33 +1,55 @@
 
 class Enemy
 {
-  PImage satBody;
-  PImage satWings;
   float satTheta;
   
-  Enemy()
+  PImage wing_left;
+  PImage wing_right;
+  PImage body_front;
+  PImage body_back;
+  PImage body_mid;
+  
+  float _x, _y;
+  
+  Enemy(float x, float y)
   {
-    satBody = loadImage("satelliteBody.png");
-    satWings = loadImage("satelliteWings.png");
+    wing_left = loadImage("enemy_wingleft.png");
+    wing_right = loadImage("enemy_wingright.png");
+    
+    body_front = loadImage("enemy_bodyfront.png");
+    body_back = loadImage("enemy_bodyback.png");
+    body_mid = loadImage("enemy_bodymid.png");
+    _x = x;
+    _y = y;
+
     satTheta = 0.0;
   }
   
   void update(float delta)
   {
-    satTheta += PI * delta/1000.0;
+    satTheta += PI * delta;
   }
   
   void draw()
   {
-    translate(-satBody.width/2, -satBody.height/2);
+    pushMatrix();
+    
+    
+    translate(_x, _y);
+    
+    scale(0.25);
 
-    image(satBody, 0, 0);
-
-    translate(satBody.width/2, satBody.height/2);
+    image(body_back, -22, -22);
+    image(body_front, -27, 31);
+    image(body_mid, -16, 22);
+    
     rotateY(satTheta);
-    translate(-satBody.width/2, -satBody.height/2);
-
-    image(satWings, 0, 0);
+    image(wing_left, -80, -39);
+    image(wing_right, 22, -39);
+    
+    
+  
+    popMatrix();
     
   }
   
