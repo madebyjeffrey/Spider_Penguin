@@ -66,6 +66,7 @@ ArrayList shots;
 void setup() {
   size(640, 480, OPENGL);
   hint(ENABLE_OPENGL_4X_SMOOTH);
+//  hint(DISABLE_DEPTH_TEST);
   
   ship = loadImage("ship3.png");
   xpos = width/2;
@@ -87,7 +88,7 @@ void setup() {
   shots = new ArrayList();
   
   minim = new Minim(this);
-  player = minim.loadFile("Chase Pulse Faster2.mp3");
+  player = minim.loadFile("Chase Pulse Faster.mp3");
   
   player.play();
 }
@@ -152,16 +153,19 @@ void draw() {
   arc(0, 0, cr*2, cr*2, 0, 2*PI);
   
 //  translate(-16, -32);
-  translate(-satBody.width/2, 0);
-  scale(0.5);
+  translate(-satBody.width/2, -satBody.height/2);
+//  scale(0.5);
   
   //image(ship, 0, 0);
   
   
   //smooth();
-  image(satBody, 0, 0, 80, 80);
+  image(satBody, 0, 0);
+
+  translate(satBody.width/2, satBody.height/2);
   rotateY(satTheta);
-  image(satWings, 0, 0, 80, 80);
+  translate(-satBody.width/2, -satBody.height/2);
+  image(satWings, 0, 0);
 }
 
 
