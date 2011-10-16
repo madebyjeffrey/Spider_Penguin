@@ -17,7 +17,10 @@ class GameScreen
    
     float w1 = (w * cx);
     
-//    if (w1 < 0) throw "No!";
+    if (w1 > width)
+    {
+      throw new IllegalArgumentException("Width too big for screen.");
+    }
     
     left = width/2 - w1/2;
   }
@@ -25,7 +28,7 @@ class GameScreen
   void drawGrid()
   {
     pushMatrix();
-  
+    translate(0, 0, -10);  
     stroke(0.35);
     
     for (int i = 0; i <= _w; i++)

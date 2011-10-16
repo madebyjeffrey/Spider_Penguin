@@ -81,7 +81,7 @@ class Ship
    
      println("ship("+xpos+", " + ypos + ")");
 
-    translate(xpos, ypos);
+    translate(xpos, ypos,-1);
     
 //    scale(0.5);
 //    rotate(theta + PI/2);
