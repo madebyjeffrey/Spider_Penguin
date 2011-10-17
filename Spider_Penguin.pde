@@ -14,6 +14,7 @@ GameScreen screen;
 
 float frames;
 float time;
+float frameTime;
 
 
 void setup() {
@@ -46,6 +47,8 @@ void setup() {
 }
 
 void draw() {
+  float frametime = millis();
+  
   background(51);
 
   // calculate velocity change from impulse
@@ -70,10 +73,11 @@ void draw() {
   enemy.draw();
   
 
-  screen.drawText("fps: " + frameRate, 0, screen.bottom + 1);
-  //  enemy.draw();
-  //  ship.draw();
-  //  ship.draw_circle();
+  screen.drawText("fps: " + nf(frameRate, 3, 1), 0, screen.bottom + 1);
+
+  float frametime2 = millis();
+  
+  println("Length of Frame in ms: " + nf(frametime2 - frametime, 0, 2));
 }
 
 
