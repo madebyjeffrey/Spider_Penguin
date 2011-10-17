@@ -80,7 +80,7 @@ class Ship
   {
     pushMatrix();
    
-     println("ship("+xpos+", " + ypos + ")");
+//     println("ship("+xpos+", " + ypos + ")");
 
     translate(xpos, ypos,-1);
     

@@ -42,6 +42,7 @@ void setup() {
   frames = 0;
   time = millis()/1000.0;
 
+  frameRate(30);
 }
 
 void draw() {
@@ -68,7 +69,8 @@ void draw() {
   
   enemy.draw();
   
-  
+
+  screen.drawText("fps: " + frameRate, 0, screen.bottom + 1);
   //  enemy.draw();
   //  ship.draw();
   //  ship.draw_circle();

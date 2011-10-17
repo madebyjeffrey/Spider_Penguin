@@ -21,7 +21,7 @@ class Shot
     pushMatrix();
    
     translate(_sx, _sy);
-    fill(1,0,0);
+  //  fill(1,0,0);
     stroke(1, 0, 0);
     arc(0, 0, 5, 5, 0, 2*PI); 
     
