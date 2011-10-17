@@ -1,4 +1,19 @@
 
+GameScreen newGame(int w, int d, float cx, float cy)
+{
+   GameScreen g;
+  try
+  {
+   g = new GameScreen(w, d, cx, cy);
+  }
+  catch (IllegalArgumentException e)
+  {
+    return null; 
+  }
+  
+  return g;
+  
+}
 
 class GameScreen
 {
@@ -6,6 +21,11 @@ class GameScreen
   float _cx, _cy;
   
   float left;
+  
+  PFont font;
+  
+  float bottom = 0;
+  float rate = 1; // move up at a rate of 2 per second
   
   GameScreen(int w, int d, float cx, float cy)
   {
@@ -22,23 +42,35 @@ class GameScreen
       throw new IllegalArgumentException("Width too big for screen.");
     }
     
+    font = loadFont("Monospaced-16.vlw");
+    
+    
     left = width/2 - w1/2;
+  }
+  
+  void update(float dt)
+  {
+    bottom += rate * dt;
   }
   
   void drawGrid()
   {
     pushMatrix();
-    translate(0, 0, -10);  
-    stroke(0.35);
     
+    setMatrix();
+    translate(0, 0, -10);
+    stroke(0.35);
+
+
     for (int i = 0; i <= _w; i++)
     {
-      line(left + i * _cx, 0, left + i * _cx, height);
-    }
+      line (i, 0, i, _d);
+    }  
     
-    for (int i = 0; i < _d; i++)
+    for (int i = 0; i <= _d; i++)
     {
-       line(left, i * _cy,  left + _cx * _w, i * _cy);
+      line (0, i, _w, i);
+      drawText("" + i, _w+0.25, i);
     }
     
     popMatrix(); 
@@ -49,8 +81,20 @@ class GameScreen
     translate(left, 0);
 
     scale(_cx, _cy);    
+    translate(0, -bottom); // bottom is in grid units
   }
 
+  void drawText(String s, float x, float y)
+  {
+    pushMatrix();
+    
+    translate(x, y);
+    scale(1, -1);
+    textFont(font, 0.33);
+    text(s, 0, 0); 
+    
+    popMatrix();
+  }
 }
 
 

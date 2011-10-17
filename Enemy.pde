@@ -45,7 +45,7 @@ class Enemy
     
     rotateY(satTheta);
     image(wing_left, -80, -39);
-    image(wing_right, 22, -39);
+    image(wing_right, 20, -39);
     
 
 

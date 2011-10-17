@@ -12,6 +12,9 @@ AudioPlayer player;
 
 GameScreen screen;
 
+float frames;
+float time;
+
 
 void setup() {
   size(800, 600, OPENGL);
@@ -28,7 +31,7 @@ void setup() {
   player.play();
 
   // game screen is 12 x 64
-  screen = new GameScreen(12, 64, 48, 48);
+  screen = newGame(12, 64, 48, 48);
 
   // ship starts at 5.5x2
   ship = new Ship(5.5, 2);
@@ -36,6 +39,8 @@ void setup() {
   enemy = new Enemy(4.5, 4.5);  
 //  ship = new Ship();
 
+  frames = 0;
+  time = millis()/1000.0;
 
 }
 
@@ -49,6 +54,10 @@ void draw() {
 
   ship.update(delta);
   enemy.update(delta);
+  screen.update(delta);
+  
+  frames++;
+  time += delta;
 
   translate(0, height);
   scale(1.0, -1.0);
@@ -58,6 +67,8 @@ void draw() {
   ship.draw();
   
   enemy.draw();
+  
+  
   //  enemy.draw();
   //  ship.draw();
   //  ship.draw_circle();

@@ -2,7 +2,7 @@
 class Ship
 {
   PImage ship;
-  ArrayList shots;
+  ArrayList<Shot> shots;
 
   float xpos, ypos;
   float r = 30;
@@ -41,21 +41,22 @@ class Ship
   {
 
     // ship position
-    xpos += dv * delta * (goLeft ? -1 : (goRight ? 1 : 0));
+    xpos += dv * delta * ((goLeft ? -1 : 0) + (goRight ? 1 : 0));
     ypos += dv * delta * (goBackward ? -1 : (goForward ? 1 : 0));
+    ypos += delta * screen.rate;
     
     if (xpos < 1) xpos = 1;
     if (xpos > (screen._w)) xpos = screen._w;
     
-    if (ypos < 2) ypos = 2;
-    if (ypos > 4.5) ypos = 4.5;
+    if (ypos < 2+screen.bottom) ypos = 2+ screen.bottom;
+    if (ypos > 4.5+screen.bottom) ypos = 4.5 +screen.bottom;
 
 
     // shots
     
     for (int i = 0; i < shots.size(); i++)
     {
-      Shot shot = (Shot) shots.get(i);
+      Shot shot = shots.get(i);
     
       shot.update(delta);
       shot.draw();
