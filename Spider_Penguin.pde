@@ -14,8 +14,7 @@ GameScreen screen;
 
 float frames;
 float time;
-float frameTime;
-
+float mean_frames;
 
 void setup() {
   size(800, 600, OPENGL);
@@ -42,8 +41,7 @@ void setup() {
 
   frames = 0;
   time = millis()/1000.0;
-
-  frameRate(30);
+  mean_frames = 0;
 }
 
 void draw() {
@@ -60,8 +58,7 @@ void draw() {
   enemy.update(delta);
   screen.update(delta);
   
-  frames++;
-  time += delta;
+
 
   translate(0, height);
   scale(1.0, -1.0);
@@ -75,8 +72,12 @@ void draw() {
 
   screen.drawText("fps: " + nf(frameRate, 3, 1), 0, screen.bottom + 1);
 
-  float frametime2 = millis();
+  float frametime2 = millis() - frametime;
+
   
+  mean_frames = (mean_frames * frames + frametime2) / (frames + 1);
+  
+  frames++;  
   println("Length of Frame in ms: " + nf(frametime2 - frametime, 0, 2));
 }
 
